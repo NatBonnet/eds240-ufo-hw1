@@ -53,11 +53,11 @@ showtext::showtext_auto(enable = TRUE)
 
 1.  **What is the author defining in lines 15-17? Where else in the code do these defined variables show up? What advantage(s) is there to defining these values here, as variables, rather than defining the values directly throughout the script?**
 
-    -   This is defining a vector of hex codes to be used later in the code. 'bg' and 'accent' pull out the specific hex codes from the defined vector so they can be called independently. These are likely to be color elements for use across graphics further in the code. Defining these now is useful as they have intuitive names that clarify where they should be applied, and also this means that no copy and pasting of stylistic elements needs to be done later down the line to get these colors.
+    -   This is defining a vector of hex codes to be used later in the code. 'bg' and 'accent' pull out the specific hex codes from the defined vector so they can be called independently. These are colors to be used across graphics further in the code. Defining these now is useful as they have intuitive names that clarify where they should be applied, and also this means that no copy and pasting of stylistic elements needs to be done later down the line to get these colors.
 
 2.  **In your own words, explain what the function, `font_add_google()`, does. What's the difference between the two arguments, `name` and `family`?**
 
-    -   This function pulls fonts from the Google Fonts Repository so they can be used in the session. The name itself is the one listed by Google Fonts, the family parameter is what R uses as a function when plotting. 
+    -   This function pulls fonts from the Google Fonts Repository. The name itself is the one listed by Google Fonts, the family parameter is what R uses as a function when plotting. 
 
 ## II. Data wrangling
 
@@ -103,7 +103,7 @@ df_us <- ufo_sightings |>
 
 4.  **Describe what this data frame contains.**
 
-    -   'This'df_us' contains the same columns as 'df_pop' along with ufo sighting data by state, including columns for the number of total observations per state, and two columns calculated from the population data for the number of ufo sightings per 10,000 people in each state, and a ratio value dividing the former by the total maximum value of ufo sightings per 10,000 across all states.
+    -   'df_us' contains the same columns as 'df_pop' along with ufo sighting data by state, including columns for the number of total observations per state, and two columns calculated from the population data for the number of ufo sightings per 10,000 people in each state, and a ratio value dividing the former by the total maximum value of ufo sightings per 10,000 across all states.
 
 5.  **What does `opacity_val` represent, and why is it calculated?**
 
@@ -131,7 +131,7 @@ df_shape <- ufo_sightings |>
 
 6.  **Describe what this data frame contains.**
 
-    -   `df_shape` contains the count of all ufo sighting data in the original df grouped by the shape reported and a ratio between 0.3 and 1 of the type of shape reported to reflect how commonly reported that group is.
+    -   `df_shape` contains the count of all ufo sighting data in the original df grouped by the shape reported, and a ratio between 0.3 and 1 of the type of shape reported to reflect how commonly reported that group is.
 
 7.  **What does `fct_reorder` do when it is applied to the `shape` variable? What would have happened if this step was not performed?**
 
@@ -275,7 +275,6 @@ plot_us <-  ggplot(df_us) +
                                  margin = margin(b = 10)),
     legend.position = "none" 
   )
-plot_us
 ```
 
 13. **Consider the order of `geom_*()` layers in the the above plot (`plot_us`). Why did the author order the layers in this way?**
@@ -310,7 +309,6 @@ plot_day <- ggplot(data = df_day_hour) +
     plot.background = element_rect(fill = bg, color = bg),
     legend.position = "none"
   )
-plot_day
 ```
 
 14. **This plot includes one-letter labels for each day of the week. How is ths accomplished when week days are written using their three-letter abbreviations (e.g. `Mon`, `Tue`) in the `df_day_hour` data frame?**
@@ -431,12 +429,11 @@ plot_base <- ggplot() +
                                             margin = margin(t = 20)),
     plot.margin = margin(b = 20, t = 50, r = 50, l = 50)
   )
-plot_base
 ```
 
 17. **Why does the author render `plot.caption` using `ggtext::element_markdown()`, rather than `element_text()` (like he does for rendering `plot.title` and `text`)?**
 
-    -   Answer here
+    -   `element_markdown()` specifically allows parsing of code formatting. Printing out `quote1`-`quote3`, you can see that these strings have line break formatting which is important to how they will print out on the final visual, so `element_markdown()` allows for stylizing that `plot.caption` would not.
 
 ## V. Assemble & save
 
@@ -463,6 +460,7 @@ ggsave(plot = plot_final,
        filename = here::here("outputs", "ufo_sightings_infographic.png"), 
        height = 16, 
        width = 10)
+plot_final
 ```
 
 18. **Explain how `plot_final` is assembled. What do you think is the most challenging aspect of arranging all components into a single plot?**
@@ -471,7 +469,7 @@ ggsave(plot = plot_final,
 
 19. **Can you think of one reason the author may have chosen to separate the construction of `plot_base` and `plot_final`?**
 
-    -   Other than the way this workflow logically layers on elements to the plot base to create a final visual, it would be easy to reuse it for another visual if you wanted to seperage them out differently.
+    -   Other than the way this workflow logically layers on elements to the plot base to create a final visual, it would be easy to reuse it for another visual if you wanted to seperate them out differently.
 
 ## Answer some final reflective questions
 
@@ -479,28 +477,28 @@ ggsave(plot = plot_final,
 
     a.  **What "perceptual tasks" (from Cleveland & McGill's heirarchy) must the viewer perform to extract information from these visualizations?**
 
-        -   Answer here
+        -   Viewers primarily have to interpret length, shading, and color saturation.
 
     b.  **What task(s) do you think the author wanted to enable or message(s) he wanted to convey with these visualizations (see lecture 2.1, slide 16 for examples)? Be sure to note at least one task / message for each of the three data viz.**
 
-        -   Answer here
+        -   The primary objective of the author was to envision temporal and spatial patterns and patterns in observations.
 
     c.  **Name at least one caveat to the "hierarchy of perceptual tasks" that the author employed to achieve a goal(s) you noted in question b?**
 
-        -   Answer here
+        -   This visual highly relies on shading to convey its message, but this is effective thematically to show the frequency of that grouping, and particularly because the most commonly observed 'ufo' is light events.
 
 21. **Describe two elements of this piece that you find visually-pleasing / easy to understand / intuitive. Why?**
 
-    -   Answer here
+    -   I love how the geom_faceting lays out state information in the general shape of the U.S. because it makes it very easy to see spatial patterns over a large area in a visual search that most people are somewhat familiar with already.
 
 22. **Describe two elements of this piece that you feel could be better presented in a different way. Why?**
 
-    -   Answer here
+    -   This is fairly subjective but I think the quotes aren't necessarily informative with all the space they are taking up. I feel like there could be a seperate visual element like a word cloud to better represent trends in the notes part of the data. Also at a certain opacity it is pretty hard to see some of the plots, so I think it would be beneficial to increase the opacity range just a little.
 
 23. **Describe two new things that you learned by interpreting / annotating this code. These could be packages, functions, or even code organizational approaches that you hadn't previously known about or considered.**
 
-    -   Answer here
+    -   I learned about the {geo_facet} package which could be very useful for any type of spatial data representation. I had also never seen {glue} be used to present markdown text visually before.
 
 24. **How, if at all, did you use AI tools to help you interpret this code? Describe your approach to using these tools for this assignment. In what ways was consulting the documentation more (or less) helpful than using AI?**
 
-    -   Answer here
+    -   If I could not figure out a function or chunk myself by testing it, and couldn't to find straightforward answers within the R documentation, Stack Overflow, or other internet resources, AI was useful for interpretting larger chunks of code together to piece together a better overall picture of why choices were made. I specifically used an LLM to learn more about how `element_markdown()` would work because the documentation wasn't super clear and it only made sense with the context of having tried to print out `quote#` and understanding that there was format evaluation going on under the hood.
